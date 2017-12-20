@@ -24,14 +24,19 @@ def stringify_dict(d):
     return {k: stringify(v) for k, v in d.items()}
 
 
+def replace_nul_string(data):
+
+
+
+
 def prepare_request_body(prep):
-    return (truncatechars(force_text(prep.body[:SECURITY_LOG_REQUEST_BODY_LENGTH + 1], errors='replace'),
-                          SECURITY_LOG_REQUEST_BODY_LENGTH) if prep.body else '')
+    return (truncatechars(force_text(body, errors='replace'),
+                          SECURITY_LOG_REQUEST_BODY_LENGTH) if prep.body else '').replace('\x00', '')
 
 
 def prepare_response_body(resp):
-    return (truncatechars(force_text(resp.content[:SECURITY_LOG_RESPONSE_BODY_LENGTH + 1], errors='replace'),
-                          SECURITY_LOG_RESPONSE_BODY_LENGTH) if resp.content else '')
+    return (truncatechars(force_text(content[:SECURITY_LOG_RESPONSE_BODY_LENGTH + 1], errors='replace'),
+                          SECURITY_LOG_RESPONSE_BODY_LENGTH) if content else '').replace('\x00', '')
 
 
 class SecuritySession(Session):
