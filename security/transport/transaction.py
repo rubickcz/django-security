@@ -64,6 +64,9 @@ def log_output_request(data, related_objects=None):
     :param data: dict of input attributes of OutputLoggedRequest model
     :param related_objects: objects that will be related to OutputLoggedRequest object
     """
+    if 'path' in data:
+        data['path'] = data['path'][:255]
+
     if is_active_logged_requests():
         output_logged_requests = _output_logged_requests_list.value[-1]
         output_logged_requests.append(OutputLoggedRequestContext(data, related_objects))
